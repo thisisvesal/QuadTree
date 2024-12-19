@@ -28,9 +28,12 @@ class QuadTree:
                     return False
             
         return True
+    
+    def isLeaf(self) -> bool:
+        return self.topLeft == None and self.topRight == None and self.bottomLeft == None and self.bottomRight == None
 
     def treeDepth(self) -> int:
-        if self.isUniform():
+        if self.isLeaf():
             return 1
         
         return max(self.topLeft.treeDepth(), self.topRight.treeDepth(), self.bottomLeft.treeDepth(), self.bottomRight.treeDepth()) + 1

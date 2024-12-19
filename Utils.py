@@ -46,7 +46,3 @@ def flatten(image: List[List[int]]) -> List[int]:
         for pix in row:
             flat.append(pix)
     return flat
-
-
-image = construct_image('Dataset/image1_gray.csv', 'L')
-save(image, 'output_image.png', 'L')
