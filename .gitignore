@@ -123,3 +123,9 @@ dmypy.json
 
 # Cython debug symbols
 cython_debug/
+
+# IDE related files
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
