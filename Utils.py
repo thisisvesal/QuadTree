@@ -1,6 +1,7 @@
 import csv
 from PIL import Image
 from math import sqrt
+from typing import List
 
 def construct_image(csv_file: str, image_mode: str): # output is either a 2d list of integers or a 2d list of int tuples
     with open(csv_file, 'r') as file:
@@ -15,21 +16,36 @@ def construct_image(csv_file: str, image_mode: str): # output is either a 2d lis
             colors = [tuple(map(int, color.split(','))) for color in colors]
         else:
             raise ValueError("Invalid image mode")
+        
+        # Determine the image size
+        total_pixels = len(colors)
+        width = int(sqrt(total_pixels))
+        height = width
+        
+        image = [[colors[col] for col in range(width * row, width * (row + 1))] for row in range(height)]
 
-        return colors
+        return image
     
 def save(image, output_image: str, image_mode: str) -> None:
     # Determine the image size
-    total_pixels = len(image)
+    total_pixels = len(image) * len(image[0])
     width = int(sqrt(total_pixels))
     height = width
 
     # Create a new image in grayscale mode
     img = Image.new(image_mode, (width, height))
-    img.putdata(image)
+    flat = flatten(image)
+    img.putdata(flat)
 
     # Save the image
     img.save(output_image)
+
+def flatten(image: List[List[int]]) -> List[int]:
+    flat = []
+    for row in image:
+        for pix in row:
+            flat.append(pix)
+    return flat
 
 
 image = construct_image('Dataset/image1_gray.csv', 'L')

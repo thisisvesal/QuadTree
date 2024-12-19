@@ -1,7 +1,7 @@
 from typing import List
 
 class QuadTree:
-    def __init__(self, image: List[int]):
+    def __init__(self, image: List[List[int]]) -> None:
         self.image = image
         self.len = len(image)
         if self.isUniform():
@@ -11,20 +11,21 @@ class QuadTree:
             self.bottomRight = None
             return
 
-        self.topLeft = QuadTree(self.image[:self.len//4])
-        self.topRight = QuadTree(self.image[self.len//4 : self.len//2])
-        self.bottomLeft = QuadTree(self.image[self.len//2 : self.len*3//4])
-        self.bottomRight = QuadTree(self.image[self.len*3//4:])
+        self.topLeft = QuadTree([row[:self.len//2] for row in image[:self.len//2]])
+        self.topRight = QuadTree([row[self.len//2:] for row in image[:self.len//2]])
+        self.bottomLeft = QuadTree([row[:self.len//2] for row in image[self.len//2:]])
+        self.bottomRight = QuadTree([row[self.len//2:] for row in image[self.len//2:]])
 
     def isUniform(self) -> bool:
         if not self.image:
             return True
         
-        source = self.image[0]
+        source = self.image[0][0]
 
-        for pix in self.image:
-            if pix != source:
-                return False
+        for row in self.image:
+            for pix in row:
+                if pix != source:
+                    return False
             
         return True
 
