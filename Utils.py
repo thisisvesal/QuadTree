@@ -76,12 +76,3 @@ def get_image_type(image: List[List]):
         return 'RGB'
     else:
         raise ValueError("Invalid image type")
-    
-def compress_image(image: List[List], newSize: int) -> List[List]:
-    part = len(image) // newSize # the size of each subspace that will be represented by one pixel in the compressed image
-    compressed_image = [[0 for _ in range(newSize)] for _ in range(newSize)]
-    for i in range(newSize):
-        for j in range(newSize):
-            compressed_image[i][j] = avearge_of_image(image, part, i, j)
-
-    return compressed_image

@@ -60,8 +60,7 @@ class QuadTree:
 
         return 0
 
-
-    def searchSubspaceWithRange(self, x1, y1, x2, y2) -> List[List]:
+    def searchSubspaceWithRange(self, x1, y1, x2, y2):
         if get_image_type(self.image) == 'L':
             ans = [[255 for _ in range(self.len)] for _ in range(self.len)]
         else:
@@ -70,7 +69,7 @@ class QuadTree:
         def mark(tree):
             if not tree:
                 return
-            if tree.isLeaf() and tree.inRange(x1, y1, x2, y2):
+            if tree.isLeaf() and tree.overlapsWith(x1, y1, x2, y2):
                 for i in range(tree.len):
                     for j in range(tree.len):
                         ans[tree.row + i][tree.col + j] = tree.image[0][0]
@@ -82,18 +81,42 @@ class QuadTree:
             mark(tree.bottomRight)
 
         mark(self)
-        return ans
 
-    def mask(self, x1, y1, x2, y2) -> List[List[int]]:
-        ...
+        return QuadTree(ans)
+
+    def mask(self, x1, y1, x2, y2):
+        ans = [[pix for pix in row] for row in self.image]
+
+        def mark(tree):
+            if not tree:
+                return
+            if tree.isLeaf() and tree.overlapsWith(x1, y1, x2, y2):
+                for i in range(tree.len):
+                    for j in range(tree.len):
+                        ans[tree.row + i][tree.col + j] = 255 if get_image_type(self.image) == 'L' else (255, 255, 255)
+                return
+            
+            mark(tree.topLeft)
+            mark(tree.topRight)
+            mark(tree.bottomLeft)
+            mark(tree.bottomRight)
+        
+        mark(self)
+
+        return QuadTree(ans)
 
     def compress(self, newSize: int):
-        compressedTree = QuadTree(compress_image(self.image, newSize))
-        self = compressedTree
+        part = self.len // newSize # the size of each subspace that will be represented by one pixel in the compressed image
+        compressed_image = [[0 for _ in range(newSize)] for _ in range(newSize)]
+        for i in range(newSize):
+            for j in range(newSize):
+                compressed_image[i][j] = avearge_of_image(self.image, part, i, j)
+
+        compressedTree = QuadTree(compressed_image)
 
         return compressedTree
     
-    def inRange(self, x1, y1, x2, y2):
+    def overlapsWith(self, x1, y1, x2, y2):
 
         x_in_range = False
         y_in_range = False
@@ -105,3 +128,24 @@ class QuadTree:
             y_in_range = True
 
         return x_in_range and y_in_range
+    
+
+
+    
+    # The following 3 methods are added just for the sake of the part in description that says:
+    # "These methods should apply the changes to the main tree"
+    # it's a bit ambiguous
+
+    def searchSubspaceWithRange_SELF(self, x1, y1, x2, y2):
+        self = self.searchSubspaceWithRange(x1, y1, x2, y2)
+        return self
+    
+    def mask_SELF(self, x1, y1, x2, y2):
+        self = self.mask(x1, y1, x2, y2)
+        return self
+    
+    def compress_SELF(self, newSize: int):
+        self = self.compress(newSize)
+        return self
+    
+    
