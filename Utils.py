@@ -28,11 +28,10 @@ def construct_image(csv_file: str, image_mode: str): # output is either a 2d lis
     
 def save(image, output_image: str, image_mode: str) -> None:
     # Determine the image size
-    total_pixels = len(image) * len(image[0])
-    width = int(sqrt(total_pixels))
-    height = width
+    width = len(image)
+    height = len(image[0])
 
-    # Create a new image in grayscale mode
+    # Create a new image
     img = Image.new(image_mode, (width, height))
     flat = flatten(image)
     img.putdata(flat)
