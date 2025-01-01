@@ -22,6 +22,9 @@ def __main__():
     save(qt_rgb.bottomLeft.image, 'Images/4/bottomleft.png', 'RGB')
     save(qt_rgb.bottomRight.image, 'Images/4/bottomright.png', 'RGB')
 
+    compressed = qt_rgb.compress(32).image
+    save(compressed, 'Images/4/compressed.png', 'RGB')
+
 if __name__ == "__main__":
     __main__()
 

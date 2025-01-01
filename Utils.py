@@ -46,3 +46,42 @@ def flatten(image: List[List[int]]) -> List[int]:
         for pix in row:
             flat.append(pix)
     return flat
+
+def avearge_of_image(image: List[List[int]], size, row, col) -> int:
+    if get_image_type(image) == 'L': # grayscale
+        sum = 0
+        for i in range(size):
+            for j in range(size):
+                sum += image[row * size + i][col * size + j]
+        return sum // (size * size)
+    
+    else: # RGB
+        sum_0, sum_1, sum_2 = 0, 0, 0
+        for i in range(size):
+            for j in range(size):
+                sum_0 += image[row * size + i][col * size + j][0]
+                sum_1 += image[row * size + i][col * size + j][1]
+                sum_2 += image[row * size + i][col * size + j][2]
+
+        avg_0 = sum_0 // (size * size)
+        avg_1 = sum_1 // (size * size)
+        avg_2 = sum_2 // (size * size)
+
+        return (avg_0, avg_1, avg_2)
+
+def get_image_type(image: List[List]):
+    if isinstance(image[0][0], int):
+        return 'L'
+    elif isinstance(image[0][0], tuple):
+        return 'RGB'
+    else:
+        raise ValueError("Invalid image type")
+    
+def compress_image(image: List[List], newSize: int) -> List[List]:
+    part = len(image) // newSize # the size of each subspace that will be represented by one pixel in the compressed image
+    compressed_image = [[0 for _ in range(newSize)] for _ in range(newSize)]
+    for i in range(newSize):
+        for j in range(newSize):
+            compressed_image[i][j] = avearge_of_image(image, part, i, j)
+
+    return compressed_image
