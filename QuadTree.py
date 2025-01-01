@@ -2,11 +2,11 @@ from typing import List
 from Utils import *
 
 class QuadTree:
-    def __init__(self, image: List[List[int]], x=0, y=0) -> None:
+    def __init__(self, image: List[List[int]], row=0, col=0) -> None:
         self.image = image
         self.len = len(image)
-        self.x = x
-        self.y = y
+        self.row = row
+        self.col = col
         if self.isUniform():
             self.topLeft = None
             self.topRight = None
@@ -14,10 +14,10 @@ class QuadTree:
             self.bottomRight = None
             return
 
-        self.topLeft = QuadTree([row[:self.len//2] for row in image[:self.len//2]], x, y)
-        self.topRight = QuadTree([row[self.len//2:] for row in image[:self.len//2]], self.len//2, y)
-        self.bottomLeft = QuadTree([row[:self.len//2] for row in image[self.len//2:]], x, self.len//2)
-        self.bottomRight = QuadTree([row[self.len//2:] for row in image[self.len//2:]], self.len//2, self.len//2)
+        self.topLeft = QuadTree([row[:self.len//2] for row in image[:self.len//2]], row, col)
+        self.topRight = QuadTree([row[self.len//2:] for row in image[:self.len//2]], row, col + self.len//2)
+        self.bottomLeft = QuadTree([row[:self.len//2] for row in image[self.len//2:]], row + self.len//2, col)
+        self.bottomRight = QuadTree([row[self.len//2:] for row in image[self.len//2:]], row + self.len//2, col + self.len//2)
 
 
     def isUniform(self) -> bool:
@@ -61,8 +61,28 @@ class QuadTree:
         return 0
 
 
-    def searchSubspaceWithRange(self, x1, y1, x2, y2) -> None:
-        ...
+    def searchSubspaceWithRange(self, x1, y1, x2, y2) -> List[List]:
+        if get_image_type(self.image) == 'L':
+            ans = [[255 for _ in range(self.len)] for _ in range(self.len)]
+        else:
+            ans = [[(255, 255, 255) for _ in range(self.len)] for _ in range(self.len)]
+
+        def mark(tree):
+            if not tree:
+                return
+            if tree.isLeaf() and tree.inRange(x1, y1, x2, y2):
+                for i in range(tree.len):
+                    for j in range(tree.len):
+                        ans[tree.row + i][tree.col + j] = tree.image[0][0]
+                return
+
+            mark(tree.topLeft)
+            mark(tree.topRight)
+            mark(tree.bottomLeft)
+            mark(tree.bottomRight)
+
+        mark(self)
+        return ans
 
     def mask(self, x1, y1, x2, y2) -> List[List[int]]:
         ...
@@ -72,3 +92,16 @@ class QuadTree:
         self = compressedTree
 
         return compressedTree
+    
+    def inRange(self, x1, y1, x2, y2):
+
+        x_in_range = False
+        y_in_range = False
+
+        if x1 < self.row + self.len and x2 >= self.row:
+            x_in_range = True
+
+        if y1 < self.col + self.len and y2 >= self.col:
+            y_in_range = True
+
+        return x_in_range and y_in_range

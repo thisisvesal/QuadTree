@@ -25,7 +25,25 @@ def __main__():
     compressed = qt_rgb.compress(32).image
     save(compressed, 'Images/4/compressed.png', 'RGB')
 
+    searched = qt.searchSubspaceWithRange(2, 2, 20, 20)
+    save(searched, 'Images/1/searched.png', 'L')
+
+def __main2__():
+    image = [[1, 1, 2, 2, 0, 0, 0, 0], 
+             [1, 1, 2, 2, 0, 0, 0, 0], 
+             [3, 4, 7, 0, 0, 0, 0, 0], 
+             [0, 0, 0, 0, 0, 0, 0, 0],
+             [0, 0, 0, 0, 0, 0, 0, 0],
+             [0, 0, 0, 0, 0, 0, 0, 0],
+             [0, 0, 0, 0, 0, 0, 0, 0],
+             [0, 0, 0, 0, 0, 0, 0, 0]]
+    qt = QuadTree(image)
+    searched = qt.searchSubspaceWithRange(1, 1, 2, 2)
+    for row in searched:
+        print(row)
+
+
 if __name__ == "__main__":
-    __main__()
+    __main2__()
 
     
