@@ -28,7 +28,7 @@ def main2():
     qt = QuadTree(image)
 
     print(f"Tree depth: {qt.treeDepth()}")
-    print(f"Pixel depth of 2, 2: {qt.pixelDepth(2, 2)}")
+    print(f"Pixel depth of 20, 128: {qt.pixelDepth(20, 128)}")
 
     save(qt.image, 'Images/2/image.png', 'L')
     save(qt.topLeft.image, 'Images/2/topleft.png', 'L')
@@ -178,9 +178,11 @@ def __main__():
 
     print("Running T1")
     T1()
+    print("")
 
     print("Running T2")
     T2()
+    print("")
 
     print("Running main_custom")
     main_custom()

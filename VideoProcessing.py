@@ -15,7 +15,7 @@ def list_to_frame(rgb_list):
     return frame_bgr
 
 # Open video file
-cap = cv2.VideoCapture('Dataset/vid1.mov')  # Replace with your video file
+cap = cv2.VideoCapture('Dataset/vid1.mov')
 
 
 while cap.isOpened():
@@ -24,9 +24,12 @@ while cap.isOpened():
         break
 
     image = frame_to_list(frame)
-    qt = QuadTree(image)
+    # With Quadtree
+    # qt = QuadTree(image)
+    # compressed = qt.compress(32).image
 
-    compressed = qt.compress(32).image
+    # Without Quadtree:
+    compressed = compress_image(image, 256)
     cv2.imshow('Compressed', list_to_frame(compressed))
 
     # Break on 'q' key press

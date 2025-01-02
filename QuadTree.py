@@ -49,13 +49,13 @@ class QuadTree:
             return 1
 
         half_len = self.len // 2
-        if px < half_len and py < half_len:
+        if px < half_len and py < half_len: # pixel in top left
             return self.topLeft.pixelDepth(px, py) + 1
-        elif px >= half_len and py < half_len:
-            return self.topRight.pixelDepth(px - half_len, py) + 1
-        elif px < half_len and py >= half_len:
-            return self.bottomLeft.pixelDepth(px, py - half_len) + 1
-        elif px >= half_len and py >= half_len:
+        elif py >= half_len and px < half_len: # pixel in top right
+            return self.topRight.pixelDepth(px, py - half_len) + 1
+        elif py < half_len and px >= half_len: # pixel in bottom left
+            return self.bottomLeft.pixelDepth(px - half_len, py) + 1
+        elif px >= half_len and py >= half_len: # pixel in bottom
             return self.bottomRight.pixelDepth(px - half_len, py - half_len) + 1
 
         return 0
