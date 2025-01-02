@@ -15,7 +15,8 @@ def list_to_frame(rgb_list):
     return frame_bgr
 
 # Open video file
-cap = cv2.VideoCapture('Dataset/sample.mov')  # Replace with your video file
+cap = cv2.VideoCapture('Dataset/vid1.mov')  # Replace with your video file
+
 
 while cap.isOpened():
     ret, frame = cap.read()

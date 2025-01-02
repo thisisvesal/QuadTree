@@ -89,6 +89,50 @@ def main4():
     compressed = qt.compress(32).image
     save(compressed, 'Images/4/compressed.png', 'RGB')
 
+def T1():
+    image = construct_image('Dataset/T1.csv', 'L')
+    qt = QuadTree(image)
+
+    print(f"Tree depth: {qt.treeDepth()}")
+    print(f"Pixel depth of 2, 2: {qt.pixelDepth(2, 2)}")
+
+    save(qt.image, 'Images/T1/image.png', 'L')
+    save(qt.topLeft.image, 'Images/T1/topleft.png', 'L')
+    save(qt.topRight.image, 'Images/T1/topright.png', 'L')
+    save(qt.bottomLeft.image, 'Images/T1/bottomleft.png', 'L')
+    save(qt.bottomRight.image, 'Images/T1/bottomright.png', 'L')
+
+    searched = qt.searchSubspaceWithRange(2, 2, 20, 20).image
+    save(searched, 'Images/T1/searched.png', 'L')
+
+    masked = qt.mask(2, 2, 20, 20).image
+    save(masked, 'Images/T1/masked.png', 'L')
+
+    compressed = qt.compress(32).image
+    save(compressed, 'Images/T1/compressed.png', 'L')
+
+def T2():
+    image = construct_image('Dataset/T2.csv', 'L')
+    qt = QuadTree(image)
+
+    print(f"Tree depth: {qt.treeDepth()}")
+    print(f"Pixel depth of 2, 2: {qt.pixelDepth(2, 2)}")
+
+    save(qt.image, 'Images/T2/image.png', 'L')
+    save(qt.topLeft.image, 'Images/T2/topleft.png', 'L')
+    save(qt.topRight.image, 'Images/T2/topright.png', 'L')
+    save(qt.bottomLeft.image, 'Images/T2/bottomleft.png', 'L')
+    save(qt.bottomRight.image, 'Images/T2/bottomright.png', 'L')
+
+    searched = qt.searchSubspaceWithRange(2, 2, 20, 20).image
+    save(searched, 'Images/T2/searched.png', 'L')
+
+    masked = qt.mask(2, 2, 20, 20).image
+    save(masked, 'Images/T2/masked.png', 'L')
+
+    compressed = qt.compress(32).image
+    save(compressed, 'Images/T2/compressed.png', 'L') 
+
 def main_custom():
     image = [[1, 1, 2, 2, 0, 0, 0, 0], 
              [1, 1, 2, 2, 0, 0, 0, 0], 
@@ -131,6 +175,12 @@ def __main__():
     print("Running main4")
     main4()
     print("")
+
+    print("Running T1")
+    T1()
+
+    print("Running T2")
+    T2()
 
     print("Running main_custom")
     main_custom()
