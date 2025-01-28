@@ -1,4 +1,4 @@
-# Final Project: Image Processing with QuadTrees
+# Image Processing with QuadTrees
 
 ## Overview
 
